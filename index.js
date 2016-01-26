@@ -65,8 +65,7 @@ var Class = function(obj, parent) {
         return function() {
           
           var tmp = _super;          
-          _super = _super[name];
-          console.log(name + '' + tmp + ' -- ' + _super + '--' + obj[name]);
+          _super = _super[name];          
           var ret = fn.call(_super, arguments);
           console.log(ret);
           _super = tmp;
