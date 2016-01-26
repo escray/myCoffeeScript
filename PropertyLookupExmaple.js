@@ -37,3 +37,6 @@ console.log(a.b);
 var b = new B();
 console.log(b.fa());
 console.log(b.fb());
+
+console.log(B.__super__);
+console.log(A.__super__);
