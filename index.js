@@ -33,9 +33,9 @@ var Class = function(obj, parent) {
   child.prototype.super = function() {
     return function() {
       // only first time assignment
-      if (!current) {
+      //if (!current) {
         current = child;
-      }
+      //}
       if (arguments.length != 0) {
         
         var result;
@@ -44,7 +44,7 @@ var Class = function(obj, parent) {
         current = current.__super__;
         
         result = current.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
-        
+
         current = temp;
         return result;
       }
