@@ -1,64 +1,97 @@
-module.exports = _Class
+var Class = function(obj, parent) {
+  
+  var child;
 
-var haspro = {}.hasOwnProperty
-var _list_s = [].splice
+  if(obj.hasOwnProperty('initialize')) {
+    child = obj['initialize'];
+  }
+  else {
+    child = new Function;
+  }
+  
+  //child.__super__ = parent || Object;
+  
+  if (parent) {
+    child.prototype = new parent();
+    child.prototype.prototype = parent.prototype;
+    child.prototype.constructor = child;
+    child.prototype._super = child.prototype;
+    child.__super__ = parent;
+  }
+  else
+  {
+    child.__super__ = Object;
+  }
+  
+  for (var method in obj) {
+    if (method != 'initialize') {
+      child.prototype[method] = obj[method];
+    }
+  }
 
-function _Class(c, p) {
+  var current;
+  child.prototype.super = function() {
+    return function() {
+      // only first time assignment
+      if (!current) {
+        current = child;
+      }
+      if (arguments.length != 0) {
+        
+        var result;
+        var temp = current;
 
-    //save org_initialize
-    //c._org_initialize = c.initialize
-    if (c.initialize === undefined) {
-        c['initialize'] = function() {}
-    };
+        current = current.__super__;
+        
+        result = current.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
 
-    //add super
-    /*
-    c.initialize = function _init() {
-  this.super = Object.prototype
-  if (c._org_initialize){
-      c._org_initialize()
-  };
-    };
-    */
-    c.initialize.__super__ = Object
+        current = temp;
+        return result;
+      }
+    }
+  }();
 
-    //hanlde with parent
-    if (p) {
+  // Implement John Reig's_super Method
+  var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+
   /*
-  //add super 
-        c.initialize = function _init() {
-      this.super = p.prototype
-      if (c._org_initialize){
-          c._org_initialize()
-      };
+  var _super = ((parent == undefined) ? Object : parent.prototype) ;
+
+  for (var name in obj) {
+    if ( _super != Object &&
+      typeof obj[name] == "function" && 
+      typeof _super[name] == "function" && 
+      fnTest.test(obj[name])) {
+      (function(name, fn) {      
+        return function() {
+          
+          var tmp = _super;          
+          _super = _super[name];          
+          var ret = fn.call(_super, arguments);
+          console.log(ret);
+          _super = tmp;
+          return ret;
         };
+      })(name, obj[name]);
+    }
+    else {
+      obj[name];
+    };
+  }
   */
-        c.initialize.__super__ = p
-  //Inheritance
-        c.initialize.prototype = Object.create(p.prototype);
-  c.initialize.prototype.constructor = c.initialize;
-  function _super() {
-      var current_class = c.initialize;
-      function __super() {
-    //p.prototype[arguments[0]].apply(this, _list_s.call(arguments, 1, -1))
-    var bak = current_class;
-    current_class = current_class.__super__;
-          result = current_class.prototype[arguments[0]].apply(this, _list_s.call(arguments, 1, arguments.length))
-    current_class = bak
-    return result
-      };
-      return __super
-  };
-  c.initialize.prototype.super = _super();
+   var _super = function() {
+    var curr = child.initialize;
+    function makesuper() {
+      var tmp = curr;
+      curr = curr.__supper__;
+      ret = curr.prototype[arguments[0]].apply(this, _list_s.call(arguments, 1, arguments.length));
+      curr = tmp;
+      return ret;
+    }
+    return makesuper;
+   }
 
-    };
+  return child;
+}
 
-    //class method
-    for (k in c) {
-        if (haspro.call(c,k) && k != 'initialize'){
-            c.initialize.prototype[k] = c[k];
-        };
-    };
-
-    return c.initialize;
-};
+module.exports = Class;
