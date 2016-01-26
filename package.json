@@ -1,0 +1,26 @@
+{
+  "name": "node-class",
+  "version": "1.0.0",
+  "description": "NodeJSCamp day 5, Implement Class Inheritance",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/escray/node-class.git"
+  },
+  "keywords": [
+    "JavaScript"
+  ],
+  "author": "escray",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/escray/node-class/issues"
+  },
+  "homepage": "https://github.com/escray/node-class#readme",
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.4"
+  }
+}
