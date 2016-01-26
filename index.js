@@ -34,23 +34,22 @@ var Class = function(obj, parent) {
     return function() {
       // only first time assignment
       if (!current) {
-        //console.log("here");
         current = child;
       }
-      var result;
-      var temp = current;
-      current = current.prototype;
-      var functionName = arguments[0];
-      result = current.proptype[functionName].apply(this, [].slice.call(arguments, 1));
-      current = temp;
-      return result;
+      if (arguments.length != 0) {
+        
+        var result;
+        var temp = current;
+
+        current = current.__super__;
+        
+        result = current.prototype[arguments[0]].apply(this, [].slice.call(arguments, 1));
+        
+        current = temp;
+        return result;
+      }
     }
-    
   }();
-  
-
-
-
 
   return child;
 }
