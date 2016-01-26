@@ -12,7 +12,7 @@ var B = Class({
     console.log("B#foo", a, b);
     // this.super === C.prototype.super
     // this calls B.prototype.foo
-    // return this.super("foo", a*10, b*100);
+     return this.super("foo", a*10, b*100);
     // fix 1
     
     //return B.prototype.super("foo", a*10, b*100);
@@ -36,3 +36,12 @@ var C = Class({
 
 var c = new C();
 console.log(c.foo(1, 2));
+
+var test = "test";
+var tmp = function() {
+    console.log(test)
+    var test = "new test"
+    console.log(test)
+}
+
+tmp();

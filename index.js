@@ -51,6 +51,34 @@ var Class = function(obj, parent) {
     }
   }();
 
+  // Implement John Reig's_super Method
+  var fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+
+   var _super = ((parent == undefined) ? Object : parent.prototype) ;
+
+    for (var name in obj) {
+      if ( _super != Object &&
+      typeof obj[name] == "function" && 
+      typeof _super[name] == "function" && 
+      fnTest.test(obj[name])) {
+      (function(name, fn) {      
+        return function() {
+          
+          var tmp = _super;          
+          _super = _super[name];
+          console.log(name + '' + tmp + ' -- ' + _super + '--' + obj[name]);
+          var ret = fn.call(_super, arguments);
+          console.log(ret);
+          _super = tmp;
+          return ret;
+        };
+      })(name, obj[name]);
+    }
+    else {
+      obj[name];
+    };
+  }
+
   return child;
 }
 
