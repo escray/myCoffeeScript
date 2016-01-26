@@ -33,9 +33,9 @@ var Class = function(obj, parent) {
   child.prototype.super = function() {
     return function() {
       // only first time assignment
-      //if (!current) {
+      if (!current) {
         current = child;
-      //}
+      }
       if (arguments.length != 0) {
         
         var result;
